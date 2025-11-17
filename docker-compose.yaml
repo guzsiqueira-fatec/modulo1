@@ -13,6 +13,46 @@ services:
       - pgdata:/var/lib/postgresql
     networks:
         - mod1
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_mod1
+    restart: on-failure
+    ports:
+      - "27017:27017"
+    networks:
+        - mod1
+  opensearch:
+    image: opensearchproject/opensearch:2.11.1
+    container_name: opensearch_mod1
+    restart: on-failure
+    environment:
+      - discovery.type=single-node
+      - plugins.security.disabled=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+        - mod1
+  graylog:
+    image: graylog/graylog:7.0
+    container_name: graylog_mod1
+    restart: on-failure
+    depends_on:
+      - mongodb
+      - opensearch
+    environment:
+      GRAYLOG_PASSWORD_SECRET: "passwordsecretsupersecure"
+      GRAYLOG_ROOT_PASSWORD_SHA2: "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2"
+      GRAYLOG_HTTP_EXTERNAL_URI: "http://localhost:9000/"
+      GRAYLOG_MONGODB_URI: "mongodb://mongodb_mod1:27017/graylog"
+      GRAYLOG_ELASTICSEARCH_HOSTS: "http://opensearch:9200"
+      GRAYLOG_HTTP_BIND_ADDRESS: "0.0.0.0:9000"
+    ports:
+        - "9000:9000"
+        - "12201:12201/udp"
+    networks:
+        - mod1
 
 volumes:
     pgdata:
