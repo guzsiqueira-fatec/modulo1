@@ -4,18 +4,16 @@ import br.gov.sp.fatec.entities.Person;
 import br.gov.sp.fatec.events.PersonDeletedEvent;
 import br.gov.sp.fatec.exceptions.PersonNotFoundException;
 import br.gov.sp.fatec.ports.person.PersonPersistencePort;
-import br.gov.sp.fatec.ports.shared.EventEmitterPort;
+import br.gov.sp.fatec.ports.shared.EventEmitter;
 import br.gov.sp.fatec.usecases.shared.UseCase;
-
-import java.util.Optional;
 
 public class DeletePersonUseCase implements UseCase<DeletePersonUseCaseInput, Void> {
     private final PersonPersistencePort personPersistencePort;
-    private final EventEmitterPort eventEmitterPort;
+    private final EventEmitter eventEmitter;
 
-    public DeletePersonUseCase(PersonPersistencePort personPersistencePort, EventEmitterPort eventEmitterPort) {
+    public DeletePersonUseCase(PersonPersistencePort personPersistencePort, EventEmitter eventEmitter) {
         this.personPersistencePort = personPersistencePort;
-        this.eventEmitterPort = eventEmitterPort;
+        this.eventEmitter = eventEmitter;
     }
 
     @Override
@@ -25,7 +23,7 @@ public class DeletePersonUseCase implements UseCase<DeletePersonUseCaseInput, Vo
         personPersistencePort.deleteById(input.id());
 
         PersonDeletedEvent event = new PersonDeletedEvent(input.id());
-        eventEmitterPort.emit(event);
+        eventEmitter.emit(event);
 
         return null;
     }

@@ -4,21 +4,19 @@ import br.gov.sp.fatec.entities.Person;
 import br.gov.sp.fatec.events.PersonUpdatedEvent;
 import br.gov.sp.fatec.exceptions.PersonNotFoundException;
 import br.gov.sp.fatec.ports.person.PersonPersistencePort;
-import br.gov.sp.fatec.ports.shared.EventEmitterPort;
+import br.gov.sp.fatec.ports.shared.EventEmitter;
 import br.gov.sp.fatec.usecases.person.shared.PersonOutput;
 import br.gov.sp.fatec.usecases.shared.UseCase;
 import br.gov.sp.fatec.vos.BirthDate;
 import br.gov.sp.fatec.vos.Name;
 
-import java.util.Optional;
-
 public class UpdatePersonUseCase implements UseCase<UpdatePersonUseCaseInput, PersonOutput> {
     private final PersonPersistencePort personPersistencePort;
-    private final EventEmitterPort eventEmitterPort;
+    private final EventEmitter eventEmitter;
 
-    public UpdatePersonUseCase(PersonPersistencePort personPersistencePort, EventEmitterPort eventEmitterPort) {
+    public UpdatePersonUseCase(PersonPersistencePort personPersistencePort, EventEmitter eventEmitter) {
         this.personPersistencePort = personPersistencePort;
-        this.eventEmitterPort = eventEmitterPort;
+        this.eventEmitter = eventEmitter;
     }
 
     @Override
@@ -42,7 +40,7 @@ public class UpdatePersonUseCase implements UseCase<UpdatePersonUseCaseInput, Pe
                 savedPerson.birthDate()
         );
 
-        eventEmitterPort.emit(event);
+        eventEmitter.emit(event);
 
         return new PersonOutput(
                 savedPerson.id(),

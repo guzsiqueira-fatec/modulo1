@@ -1,7 +1,7 @@
 package br.gov.sp.fatec.config;
 
 import br.gov.sp.fatec.ports.person.PersonPersistencePort;
-import br.gov.sp.fatec.ports.shared.EventEmitterPort;
+import br.gov.sp.fatec.ports.shared.EventEmitter;
 import br.gov.sp.fatec.usecases.person.create.CreatePersonUseCase;
 import br.gov.sp.fatec.usecases.person.delete.DeletePersonUseCase;
 import br.gov.sp.fatec.usecases.person.findAllPaged.FindAllPagedUseCase;
@@ -13,13 +13,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class PersonUseCaseConfig {
     @Bean
-    public CreatePersonUseCase createPersonUseCase(PersonPersistencePort personPersistencePort, EventEmitterPort eventEmitterPort) {
-        return new CreatePersonUseCase(personPersistencePort, eventEmitterPort);
+    public CreatePersonUseCase createPersonUseCase(PersonPersistencePort personPersistencePort, EventEmitter eventEmitter) {
+        return new CreatePersonUseCase(personPersistencePort, eventEmitter);
     }
 
     @Bean
-    public DeletePersonUseCase deletePersonUseCase(PersonPersistencePort personPersistencePort, EventEmitterPort eventEmitterPort) {
-        return new DeletePersonUseCase(personPersistencePort, eventEmitterPort);
+    public DeletePersonUseCase deletePersonUseCase(PersonPersistencePort personPersistencePort, EventEmitter eventEmitter) {
+        return new DeletePersonUseCase(personPersistencePort, eventEmitter);
     }
 
     @Bean
@@ -28,8 +28,8 @@ public class PersonUseCaseConfig {
     }
 
     @Bean
-    public UpdatePersonUseCase updatePersonUseCase(PersonPersistencePort personPersistencePort, EventEmitterPort eventEmitterPort) {
-        return new UpdatePersonUseCase(personPersistencePort, eventEmitterPort);
+    public UpdatePersonUseCase updatePersonUseCase(PersonPersistencePort personPersistencePort, EventEmitter eventEmitter) {
+        return new UpdatePersonUseCase(personPersistencePort, eventEmitter);
     }
 
     @Bean
