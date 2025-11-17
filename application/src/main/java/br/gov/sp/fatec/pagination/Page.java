@@ -1,7 +1,10 @@
 package br.gov.sp.fatec.pagination;
 
+
+import java.util.List;
+
 public record Page<T>(
-    Iterable<T> items,
+    List<T> items,
     int currentPage,
     int totalPages,
     long totalItems

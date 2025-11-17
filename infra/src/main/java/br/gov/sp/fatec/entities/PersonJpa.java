@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "PERSONS")
-@SQLDelete(sql = "UPDATE PERSONS SET PERS_ACTIVE = false WHERE PERS_ID = ?")
+@SQLDelete(sql = "UPDATE PERSONS SET PRSN_ACTIVE = false WHERE PRSN_ID = ?")
 public class PersonJpa {
 
     @Id
